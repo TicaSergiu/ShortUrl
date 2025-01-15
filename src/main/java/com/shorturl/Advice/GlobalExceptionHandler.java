@@ -12,8 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidUrlException.class)
     public ResponseEntity<String> handleInvalidUrl(InvalidUrlException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body("Cannot shorten the URL. The URL cannot be empty and it should be a valid URL address");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(CustomUrlAlreadyExistsException.class)
