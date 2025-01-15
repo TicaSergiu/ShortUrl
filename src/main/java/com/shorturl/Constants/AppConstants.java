@@ -1,4 +1,4 @@
-package com.shorturl.Configs;
+package com.shorturl.Constants;
 
 public class AppConstants {
     public static final int SHORT_URL_SIZE = 8;
