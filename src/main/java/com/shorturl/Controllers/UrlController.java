@@ -23,9 +23,14 @@ public class UrlController {
         this.urlService = urlService;
     }
 
-    @PostMapping("shorten/")
+    @PostMapping("shorten")
     public UrlPO shortenURL(@RequestParam String url) {
         return urlService.shortenUrl(url);
+    }
+
+    @PostMapping("shorten/custom")
+    public UrlPO customUrl(@RequestParam String url, @RequestParam String customUrl) {
+        return urlService.makeCustomUrl(url, customUrl);
     }
 
     @GetMapping("")

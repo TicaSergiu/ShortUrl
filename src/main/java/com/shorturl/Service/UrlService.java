@@ -1,6 +1,7 @@
 package com.shorturl.Service;
 
-import com.shorturl.Configs.AppConstants;
+import com.shorturl.Constants.AppConstants;
+import com.shorturl.Exceptions.CustomUrlAlreadyExistsException;
 import com.shorturl.Models.UrlPO;
 import com.shorturl.Repositories.UrlRepository;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -20,7 +21,7 @@ public class UrlService {
 
     public UrlPO shortenUrl(String url) {
         if(isNotValidUrl(url)) {
-            throw new InvalidUrlException("Url is not valid");
+            throw new InvalidUrlException("");
         }
 
         if(urlRepository.existsUrlByOriginalUrl(url)) {
@@ -68,5 +69,36 @@ public class UrlService {
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(url);
         return matcher.matches();
+    }
+
+    public UrlPO makeCustomUrl(String url, String customUrl) {
+        if(isNotValidUrl(url)) {
+            throw new InvalidUrlException(
+                    "URL is not valid. The valid URL should not be empty and be a valid web address.");
+        }
+
+        if(!isValidCustomUrl(customUrl)) {
+            throw new InvalidUrlException(
+                    "Custom URL should be exactly 8 characters long and contain only numbers and letters.");
+        }
+
+        UrlPO urlPO = urlRepository.findByShortUrl(customUrl);
+        if(urlPO != null) {
+            throw new CustomUrlAlreadyExistsException("Selected custom URL is already in use");
+        }
+
+        urlPO = new UrlPO();
+        urlPO.setOriginalUrl(url);
+        urlPO.setShortUrl(customUrl);
+        return urlRepository.save(urlPO);
+    }
+
+    private boolean isValidCustomUrl(String customUrl) {
+        if(customUrl.length() != AppConstants.SHORT_URL_SIZE) {
+            return false;
+        }
+        final String regex = "\\w{8}";
+        final Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(customUrl).matches();
     }
 }
