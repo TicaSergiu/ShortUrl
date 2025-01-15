@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.net.URI;
 
 @RestController
+@RequestMapping("api/")
 public class UrlController {
     private final UrlService urlService;
 
@@ -21,12 +23,12 @@ public class UrlController {
         this.urlService = urlService;
     }
 
-    @PostMapping("api/v1/shorten/")
+    @PostMapping("shorten/")
     public UrlPO shortenURL(@RequestParam String url) {
         return urlService.shortenUrl(url);
     }
 
-    @GetMapping("/api/v1/")
+    @GetMapping("")
     public ResponseEntity<Void> redirect(@RequestParam String shortUrl) {
         UrlPO urlPO = urlService.findOriginalUrl(shortUrl);
         if(urlPO == null) {
