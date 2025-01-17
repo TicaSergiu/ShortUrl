@@ -8,6 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.InvalidUrlException;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,7 +63,7 @@ public class UrlService {
     }
 
     private boolean isNotValidUrl(String url) {
-        if(url == null || url.isEmpty()) {
+        if(url == null || url.length() < 4) {
             return true;
         }
         final String regex = "\"(http(s)?://.)?(www\\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_+.~#?&/=]*)\"";
@@ -100,5 +101,9 @@ public class UrlService {
         final String regex = "\\w{8}";
         final Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(customUrl).matches();
+    }
+
+    public List<UrlPO> getUrlsCreatedByUser(String username) {
+        return urlRepository.findAllByUsername(username);
     }
 }

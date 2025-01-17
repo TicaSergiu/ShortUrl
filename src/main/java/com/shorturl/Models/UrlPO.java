@@ -34,6 +34,21 @@ public class UrlPO {
     @Column(name="access_count")
     private Integer accessCount;
 
+    @Column(name="user_id")
+    private Integer userId;
+
+    public String getCreationDate() {
+        return this.createdAt.toString().substring(0, this.createdAt.toString().indexOf("T"));
+    }
+
+    public Integer getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(Integer id) {
+        this.userId = id;
+    }
+
     public Integer getId() {
         return id;
     }
