@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="link-form">
+    <label for="link">Link:</label>
+    <input type="url" id="link" name="url" required>
+    <button type="submit">Shorten</button>
+</form>
+<a href=""></a>
+<div id="data-container"></div>
+<script>
+    function fetchData(url) {
+        return fetch(`/api/shorten?url=${url.value}`, {method: "POST"}).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            return response.json();
+        })
+    }
+
+    document.getElementById('link-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const linkUrl = document.getElementById("link");
+        const container = document.getElementById("data-container");
+        container.innerHTML = '';
+        fetchData(linkUrl).then(data => {
+            const p = document.createElement('p');
+            p.textContent = `Created short url: localhost:8080/${data.shortUrl}`
+            container.appendChild(p);
+        }).catch(error => {
+            const p = document.createElement('p');
+            p.textContent = `${error.message}`;
+            container.appendChild(p);
+        });
+    })
+</script>
+</body>
+</html>

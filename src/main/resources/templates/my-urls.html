@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My urls</title>
+</head>
+<body>
+<form action="api/my-urls" method="get">
+    <h1 th:text="${size}"></h1>
+    <h1 th:text="${user}"></h1>
+    <table>
+        <tr>
+            <th>Original URL</th>
+            <th>ShortURL</th>
+            <th>Created at</th>
+            <th>Accesed</th>
+        </tr>
+        <tr th:each="url: ${urls}">
+            <td th:text="${url.originalUrl}"></td>
+            <td th:text="${url.shortUrl}"></td>
+            <td th:text="${url.getCreationDate()}"></td>
+            <td th:text="${url.accessCount}"></td>
+        </tr>
+    </table>
+</form>
+</body>
+
+</html>
